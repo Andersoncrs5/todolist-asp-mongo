@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/E2E/ToDoList.Tests.E2E/ToDoList.Tests.E2E.csproj": {}
+    "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/Validation/ToDoList.Tests.Validation.csproj": {}
   },
   "projects": {
-    "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/E2E/ToDoList.Tests.E2E/ToDoList.Tests.E2E.csproj": {
+    "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/Validation/ToDoList.Tests.Validation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/E2E/ToDoList.Tests.E2E/ToDoList.Tests.E2E.csproj",
-        "projectName": "ToDoList.Tests.E2E",
-        "projectPath": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/E2E/ToDoList.Tests.E2E/ToDoList.Tests.E2E.csproj",
+        "projectUniqueName": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/Validation/ToDoList.Tests.Validation.csproj",
+        "projectName": "ToDoList.Tests.Validation",
+        "projectPath": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/Validation/ToDoList.Tests.Validation.csproj",
         "packagesPath": "/home/anderson/.nuget/packages/",
-        "outputPath": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/E2E/ToDoList.Tests.E2E/obj/",
+        "outputPath": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.Tests/Validation/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/anderson/.nuget/NuGet/NuGet.Config"
@@ -44,17 +44,9 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "FluentAssertions": {
-              "target": "Package",
-              "version": "[8.4.0, )"
-            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[17.14.1, )"
-            },
-            "Moq": {
-              "target": "Package",
-              "version": "[4.20.72, )"
+              "version": "[17.12.0, )"
             },
             "coverlet.collector": {
               "target": "Package",
@@ -62,13 +54,11 @@
             },
             "xunit": {
               "target": "Package",
-              "version": "[2.9.3, )"
+              "version": "[2.9.2, )"
             },
             "xunit.runner.visualstudio": {
-              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
-              "suppressParent": "All",
               "target": "Package",
-              "version": "[3.1.1, )"
+              "version": "[2.8.2, )"
             }
           },
           "imports": [
