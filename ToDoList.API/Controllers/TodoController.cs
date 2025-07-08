@@ -12,7 +12,7 @@ namespace ToDoList.API.Controllers
     public class TodoController : ControllerBase
     {
         [HttpGet("/get-all")]
-        public async Task<IActionResult> getAll() {
+        public async Task<IActionResult> GetAll() {
             return Ok("All Tasks");
         }
     }
