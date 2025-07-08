@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
@@ -19,11 +20,6 @@ namespace ToDoList.API.Contracts.Repositories
         {
             var database = mongoClient.GetDatabase(settings.Value.DatabaseName);
             _collection = database.GetCollection<TaskModel>("Tasks");
-        }
-
-        public async Task<List<TaskModel>> GetAllAsync() 
-        {
-            return await _collection.Find(item => true).ToListAsync();
         }
 
         public async Task<TaskModel> GetByIdAsync(string Id) 
@@ -55,6 +51,30 @@ namespace ToDoList.API.Contracts.Repositories
         public async Task UpdateAsync(TaskModel exists, TaskModel task)
         {
             await this._collection.ReplaceOneAsync(t => t.Id.Contains(exists.Id), task);
+        }
+
+        public async Task<List<TaskModel>> GetPaginatedAsync(
+            int pageNumber,
+            int pageSize,
+            Expression<Func<TaskModel, bool>>? filter = null)
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            int skipAmount = (pageNumber - 1) * pageSize;
+
+            var query = filter == null
+                ? _collection.Find(_ => true)
+                : _collection.Find(filter);
+
+            return await query.Skip(skipAmount).Limit(pageSize).ToListAsync();
+        }
+
+        public async Task<long> CountAsync(Expression<Func<TaskModel, bool>>? filter = null)
+        {
+            return filter == null
+                ? await _collection.CountDocumentsAsync(_ => true)
+                : await _collection.CountDocumentsAsync(filter);
         }
 
     }
