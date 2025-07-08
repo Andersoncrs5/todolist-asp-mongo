@@ -4,8 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using ToDoList.API.Contracts.IRepositories;
+using ToDoList.API.Contracts.Repositories;
+using ToDoList.API.SetUnitOfWork;
+using ToDoList.API.utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +21,19 @@ if (string.IsNullOrEmpty(mongoDbConnectionString))
     throw new InvalidOperationException("MongoDB connection string is not configured in appsettings.json.");
 }
 
+builder.Services.Configure<MongoDbSettings>( 
+    builder.Configuration.GetSection("MongoDbSettings"));
+
 builder.Services.AddSingleton<IMongoClient>(s =>
 {
     return new MongoClient(mongoDbConnectionString);
 });
 
-builder.Services.AddSingleton(s =>
+builder.Services.AddSingleton<IMongoDatabase>(s =>
 {
     var client = s.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("ToDoListDb");
+    var settings = s.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+    return client.GetDatabase(settings.DatabaseName);
 });
 
 builder.Services.AddApiVersioning(options =>
@@ -109,6 +118,9 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+builder.Services.AddSingleton<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 
