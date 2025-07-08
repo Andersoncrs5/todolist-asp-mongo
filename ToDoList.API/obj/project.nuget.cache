@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "568kJRZXIvs=",
+  "dgSpecHash": "ejdET9f/S/M=",
   "success": true,
   "projectFilePath": "/home/anderson/Desktop/c#/asp_core/api/projects/ToDoList/ToDoList.API/ToDoList.API.csproj",
   "expectedPackageFiles": [
+    "/home/anderson/.nuget/packages/microsoft.aspnetcore.mvc.versioning/5.1.0/microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
+    "/home/anderson/.nuget/packages/microsoft.aspnetcore.mvc.versioning.apiexplorer/5.1.0/microsoft.aspnetcore.mvc.versioning.apiexplorer.5.1.0.nupkg.sha512",
     "/home/anderson/.nuget/packages/microsoft.aspnetcore.openapi/9.0.5/microsoft.aspnetcore.openapi.9.0.5.nupkg.sha512",
     "/home/anderson/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512"
   ],
