@@ -11,7 +11,7 @@ namespace ToDoList.API.Contracts.IRepositories
     {
         Task<TaskModel> GetByIdAsync(string id);
         Task AddAsync(TaskModel item);
-        Task UpdateAsync(TaskModel exists, TaskModel item);
+        Task UpdateAsync(string Id, TaskModel item);
         Task DeleteAsync(string id);
         Task<List<TaskModel>> GetPaginatedAsync(
             int pageNumber,int pageSize,

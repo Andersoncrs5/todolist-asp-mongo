@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using ToDoList.API.Controllers.DTOs;
 using ToDoList.API.models;
 using ToDoList.API.SetUnitOfWork;
 using ToDoList.API.utils.mappers;
+using ToDoList.API.utils.pagination;
 using ToDoList.API.utils.Responses;
 
 namespace ToDoList.API.Controllers
@@ -25,11 +27,25 @@ namespace ToDoList.API.Controllers
             _unit = unit;
         }
 
-        [HttpGet("/get-all")]
-        public async Task<IActionResult> GetAll() 
+        [HttpGet]
+        public async Task<ActionResult> GetPaginated(
+            [FromQuery] int pageNumber = 1,  
+            [FromQuery] int pageSize = 10,   
+            [FromQuery] string? searchText = null) 
         {
-            var result = await _unit.TaskRepository.GetAllAsync();
-            return Ok(result);
+            Expression<Func<TaskModel, bool>>? filter = null;
+
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                filter = task => task.Name.ToLower().Contains(searchText.ToLower()) ||
+                                 task.Description.ToLower().Contains(searchText.ToLower());
+            }
+
+            long totalRecords = await _unit.TaskRepository.CountAsync(filter);
+            List<TaskModel> tasks = await _unit.TaskRepository.GetPaginatedAsync(pageNumber, pageSize, filter);
+
+            PagedResponse<TaskModel> pagedResponse = new PagedResponse<TaskModel>(tasks, pageNumber, pageSize, totalRecords);
+            return Ok(pagedResponse);
         }
 
         [HttpPost]
@@ -72,11 +88,11 @@ namespace ToDoList.API.Controllers
             ));
         }
 
-        [HttpPut("{id:required}")]
+        [HttpPut("{Id:required}")]
         public async Task<IActionResult> Update(string Id, [FromBody] UpdateTaskDTO dto )
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
-            await _unit.TaskRepository.UpdateAsync(task, TaskMappear.UpdateTaskDTOToTask(dto));
+            await _unit.TaskRepository.UpdateAsync(Id, TaskMappear.UpdateTaskDTOToTask(dto));
 
             return Ok(new Response(
                 "success",

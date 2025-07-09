@@ -48,9 +48,10 @@ namespace ToDoList.API.Contracts.Repositories
             await _collection.InsertOneAsync(task);
         }
 
-        public async Task UpdateAsync(TaskModel exists, TaskModel task)
+        public async Task UpdateAsync(string Id, TaskModel task)
         {
-            await this._collection.ReplaceOneAsync(t => t.Id.Contains(exists.Id), task);
+            task.Id = Id;
+            await this._collection.ReplaceOneAsync(t => t.Id == Id, task);
         }
 
         public async Task<List<TaskModel>> GetPaginatedAsync(
