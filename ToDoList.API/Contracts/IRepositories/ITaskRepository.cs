@@ -16,6 +16,6 @@ namespace ToDoList.API.Contracts.IRepositories
         Task<List<TaskModel>> GetPaginatedAsync(int pageNumber,int pageSize,Expression<Func<TaskModel, bool>>? filter = null); 
         Task<long> CountAsync(Expression<Func<TaskModel, bool>>? filter = null);
         Task DeleteManyAsync(List<string> Ids);
-
+        Task ChangeComepleteTask(string Id, TaskModel task);
     }
 }

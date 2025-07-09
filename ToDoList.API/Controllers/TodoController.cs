@@ -105,5 +105,20 @@ namespace ToDoList.API.Controllers
             ));
         }
 
+        [HttpPatch("{Id:required}")]
+        public async Task<IActionResult> ChangeStatus(string Id)
+        {
+            TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
+            await _unit.TaskRepository.ChangeComepleteTask(Id, task);
+
+            return Ok(new Response(
+                "success",
+                "Task changed",
+                200,
+                task
+            ));
+        }
+
+        
     }
 }

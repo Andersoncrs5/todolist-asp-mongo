@@ -90,5 +90,11 @@ namespace ToDoList.API.Contracts.Repositories
                 : await _collection.CountDocumentsAsync(filter);
         }
 
+        public async Task ChangeComepleteTask(string Id, TaskModel task)
+        {
+            task.IsComplete = !task.IsComplete;
+            await _collection.ReplaceOneAsync(item => item.Id.Equals(Id), task);
+        }
+
     }
 }
