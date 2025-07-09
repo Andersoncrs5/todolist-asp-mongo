@@ -8,6 +8,7 @@ namespace ToDoList.API.Controllers.DTOs
 {
     public class CreateTaskDTO
     {
+        public string? Id { get; set; }
         [Required(ErrorMessage = "Task name is required.")] 
         [StringLength(50, MinimumLength = 5, ErrorMessage = "The max is 50 and min is 5")]
         public string Name { get; set; } = string.Empty;

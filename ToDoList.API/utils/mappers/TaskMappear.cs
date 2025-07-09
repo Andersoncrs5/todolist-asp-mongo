@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ToDoList.API.Controllers.DTOs;
 using ToDoList.API.models;
+using MongoDB.Bson;
 
 namespace ToDoList.API.utils.mappers
 {
@@ -13,6 +14,7 @@ namespace ToDoList.API.utils.mappers
         {
             return new TaskModel
             { 
+                Id = ObjectId.GenerateNewId().ToString(),
                 Name = dto.Name,
                 Description = dto.Description,
                 IsComplete = dto.IsComplete,

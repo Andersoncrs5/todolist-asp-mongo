@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ToDoList.Tests.Integration")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62365574d35760f123dad7ae12c8d4786036d7c5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6561150e3086d09db12f3a52ad5aade5eabd8364")]
 [assembly: System.Reflection.AssemblyProductAttribute("ToDoList.Tests.Integration")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ToDoList.Tests.Integration")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -114,8 +114,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAllOrigins", policy =>
     {
         policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
@@ -148,3 +148,5 @@ app.MapControllers();
 app.MapOpenApi();
 
 app.Run();
+
+public partial class Program { }

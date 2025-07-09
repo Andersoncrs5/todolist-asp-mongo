@@ -43,13 +43,14 @@ namespace ToDoList.API.Controllers
         [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> Add([FromBody] CreateTaskDTO task)
         {
-            await _unit.TaskRepository.AddAsync(TaskMappear.CreateTaskDTOToTask(task));
+            TaskModel taskCreated = await _unit.TaskRepository.AddAsync(TaskMappear.CreateTaskDTOToTask(task));
+             
 
-            return Ok(new Response(
+            return Ok(new Response<TaskModel>(
                 "success",
                 "Task created",
                 201,
-                ""
+                taskCreated
             ));
         }
 
@@ -60,7 +61,7 @@ namespace ToDoList.API.Controllers
             await _unit.TaskRepository.GetByIdAsync(Id);
             await _unit.TaskRepository.DeleteAsync(Id);
 
-            return Ok(new Response(
+            return Ok(new Response<string>(
                 "success",
                 "Task deleted",
                 200,
@@ -74,7 +75,7 @@ namespace ToDoList.API.Controllers
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
 
-            return Ok(new Response(
+            return Ok(new Response<TaskModel>(
                 "success",
                 "Task founded",
                 200,
@@ -89,7 +90,7 @@ namespace ToDoList.API.Controllers
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
             await _unit.TaskRepository.UpdateAsync(Id, TaskMappear.UpdateTaskDTOToTask(dto));
 
-            return Ok(new Response(
+            return Ok(new Response<string>(
                 "success",
                 "Task updated",
                 200,
@@ -104,7 +105,7 @@ namespace ToDoList.API.Controllers
             await this._unit.TaskRepository.DeleteManyAsync(Ids);
             await this._unit.CompleteAsync();
 
-            return Ok(new Response(
+            return Ok(new Response<string>(
                 "success",
                 "Tasks deleted!",
                 200,
@@ -112,14 +113,15 @@ namespace ToDoList.API.Controllers
             ));
         }
 
-        [HttpPatch("{Id:required}")]
+        [HttpGet("change/{Id:required}")]
         [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> ChangeStatus(string Id)
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
             await _unit.TaskRepository.ChangeComepleteTask(Id, task);
+            task.IsComplete = !task.IsComplete;
 
-            return Ok(new Response(
+            return Ok(new Response<TaskModel>(
                 "success",
                 "Task changed",
                 200,

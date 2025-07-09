@@ -55,9 +55,10 @@ namespace ToDoList.API.Contracts.Repositories
             await _collection.DeleteManyAsync(filter);
         }
 
-        public async Task AddAsync(TaskModel task)
+        public async Task<TaskModel> AddAsync(TaskModel task)
         {
             await _collection.InsertOneAsync(task);
+            return task;
         }
 
         public async Task UpdateAsync(string Id, TaskModel task)

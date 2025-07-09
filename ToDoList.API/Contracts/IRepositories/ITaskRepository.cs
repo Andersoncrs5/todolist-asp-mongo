@@ -10,7 +10,7 @@ namespace ToDoList.API.Contracts.IRepositories
     public interface ITaskRepository
     {
         Task<TaskModel> GetByIdAsync(string id);
-        Task AddAsync(TaskModel item);
+        Task<TaskModel> AddAsync(TaskModel item);
         Task UpdateAsync(string Id, TaskModel item);
         Task DeleteAsync(string id);
         Task<List<TaskModel>> GetPaginatedAsync(int pageNumber,int pageSize,Expression<Func<TaskModel, bool>>? filter = null); 
