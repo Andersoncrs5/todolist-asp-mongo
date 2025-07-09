@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Net;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ToDoList.API.Contracts.Repositories;
 using ToDoList.API.Controllers.DTOs;
 using ToDoList.API.models;
 using ToDoList.API.SetUnitOfWork;
@@ -28,23 +25,15 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetPaginated(
-            [FromQuery] int pageNumber = 1,  
-            [FromQuery] int pageSize = 10,   
-            [FromQuery] string? searchText = null) 
-        {
+        public async Task<ActionResult> GetPaginated([FromQuery] TaskQueryStruct taskQuery) {
             Expression<Func<TaskModel, bool>>? filter = null;
 
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                filter = task => task.Name.ToLower().Contains(searchText.ToLower()) ||
-                                 task.Description.ToLower().Contains(searchText.ToLower());
-            }
+            filter = TaskFilter.ApplyFilter(taskQuery, filter);
 
             long totalRecords = await _unit.TaskRepository.CountAsync(filter);
-            List<TaskModel> tasks = await _unit.TaskRepository.GetPaginatedAsync(pageNumber, pageSize, filter);
+            List<TaskModel> tasks = await _unit.TaskRepository.GetPaginatedAsync(taskQuery.PageNumber, taskQuery.PageSize, filter);
 
-            PagedResponse<TaskModel> pagedResponse = new PagedResponse<TaskModel>(tasks, pageNumber, pageSize, totalRecords);
+            PagedResponse<TaskModel> pagedResponse = new PagedResponse<TaskModel>(tasks, taskQuery.PageNumber, taskQuery.PageSize, totalRecords);
             return Ok(pagedResponse);
         }
 
