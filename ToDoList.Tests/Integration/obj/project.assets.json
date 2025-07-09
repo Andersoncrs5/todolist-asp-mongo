@@ -1172,6 +1172,7 @@
       "FluentAssertions >= 8.4.0",
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "Moq >= 4.20.72",
+      "Newtonsoft.Json >= 13.0.3",
       "coverlet.collector >= 6.0.2",
       "xunit >= 2.9.3",
       "xunit.runner.visualstudio >= 3.1.1"
@@ -1231,6 +1232,10 @@
           "Moq": {
             "target": "Package",
             "version": "[4.20.72, )"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "[13.0.3, )"
           },
           "coverlet.collector": {
             "target": "Package",
