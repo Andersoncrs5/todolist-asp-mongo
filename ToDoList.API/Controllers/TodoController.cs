@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using ToDoList.API.Controllers.DTOs;
 using ToDoList.API.models;
 using ToDoList.API.SetUnitOfWork;
@@ -25,6 +26,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpGet]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<ActionResult> GetPaginated([FromQuery] TaskQueryStruct taskQuery) {
             Expression<Func<TaskModel, bool>>? filter = null;
 
@@ -38,6 +40,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpPost]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> Add([FromBody] CreateTaskDTO task)
         {
             await _unit.TaskRepository.AddAsync(TaskMappear.CreateTaskDTOToTask(task));
@@ -51,6 +54,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpDelete("{Id:required}")]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> Delete(string Id)
         {
             await _unit.TaskRepository.GetByIdAsync(Id);
@@ -65,6 +69,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpGet("{Id:required}")]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> Get(string Id)
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
@@ -78,6 +83,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpPut("{Id:required}")]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> Update(string Id, [FromBody] UpdateTaskDTO dto )
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
@@ -92,6 +98,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpDelete("delete-many")]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> DeleteMany(List<string> Ids) 
         {
             await this._unit.TaskRepository.DeleteManyAsync(Ids);
@@ -106,6 +113,7 @@ namespace ToDoList.API.Controllers
         }
 
         [HttpPatch("{Id:required}")]
+        [EnableRateLimiting("SlidingWindowLimiterPolicy")]
         public async Task<IActionResult> ChangeStatus(string Id)
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
@@ -119,6 +127,5 @@ namespace ToDoList.API.Controllers
             ));
         }
 
-        
     }
 }
