@@ -8,3 +8,15 @@ ToDoList.API/appsettings.Development.json
 # TEST INTEGRATION:
 ToDoList.Tests/Integration/bin
 ToDoList.Tests/Integration/obj
+
+#TEST UNIT
+ToDoList.Tests/Unit/bin
+ToDoList.Tests/Unit/obj
+
+#TEST VALIDATION
+ToDoList.Tests/Validation/bin
+ToDoList.Tests/Validation/obj
+
+#TEST E2E
+ToDoList.Tests/E2E/bin
+ToDoList.Tests/E2E/obj

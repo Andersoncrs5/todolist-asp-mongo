@@ -57,6 +57,7 @@ namespace ToDoList.API.Contracts.Repositories
 
         public async Task<TaskModel> AddAsync(TaskModel task)
         {
+            task.IsComplete = false;
             await _collection.InsertOneAsync(task);
             return task;
         }

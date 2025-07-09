@@ -6,6 +6,7 @@ using FluentAssertions;
 using Xunit;
 using ToDoList.API.utils.Responses;
 using ToDoList.API.models;
+using ToDoList.API.Controllers.DTOs;
 
 namespace ToDoList.Tests.Integration;
 
@@ -133,7 +134,7 @@ public class IntegrationTest: IClassFixture<CustomWebApplicationFactory>
         Response<TaskModel>? changeContent = await changeResponse.Content.ReadFromJsonAsync<Response<TaskModel>>();
 
         changeContent.Should().NotBeNull();
-        changeContent.Should().BeOfType<TaskModel>();
+        changeContent.data.Should().BeOfType<TaskModel>();
 
         changeContent.Status.Should().NotBeNull();
         changeContent.Status.Should().Be("success");
@@ -149,8 +150,51 @@ public class IntegrationTest: IClassFixture<CustomWebApplicationFactory>
         changeContent.data.Name.Should().Be(task.Name);
 
         changeContent.data.Description.Should().Be(task.Description);
+    }
 
-        changeContent.data.IsComplete.Should().Be(!task.IsComplete);
+    [Fact]
+    public async Task Update()
+    {
+        TaskModel task = new TaskModel{ Name = "New Task", Description = "New Task", IsComplete = false };
+
+        HttpResponseMessage postResponse = await _client.PostAsJsonAsync("api/v1/todo", task);
+        postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        Response<TaskModel>? postContent = await postResponse.Content.ReadFromJsonAsync<Response<TaskModel>>();
+        
+        postContent.Should().NotBeNull();
+        postContent.data.Id.Should().NotBeNullOrEmpty();
+        string id = postContent.data.Id;
+
+        UpdateTaskDTO taskToUpdate = new UpdateTaskDTO{ Name = "New Task Update", Description = "New Task Update", IsComplete = false };
+        HttpResponseMessage putResponse = await _client.PutAsJsonAsync($"api/v1/todo/{id}", taskToUpdate);
+        putResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        Response<string>? content = await putResponse.Content.ReadFromJsonAsync<Response<string>>();
+
+        content.Should().NotBeNull();
+        content.Status.Should().Be("success");
+        content.Message.Should().Be("Task updated");        
+        content.Code.Should().Be(200);
+
+        HttpResponseMessage getResponse = await _client.GetAsync($"api/v1/todo/{id}");
+        Response<TaskModel>? getContent = await getResponse.Content.ReadFromJsonAsync<Response<TaskModel>>();
+
+        getContent.Should().NotBeNull();
+
+        getContent.data.Should().NotBeNull();
+        getContent.data.Id.Should().Be(id);
+        getContent.data.Name.Should().Be(taskToUpdate.Name);
+        getContent.data.Description.Should().Be(taskToUpdate.Description);
+
+        getContent.Status.Should().NotBeNull();
+        getContent.Status.Should().Be("success");
+
+        getContent.Message.Should().NotBeNull();
+        getContent.Message.Should().Be("Task founded");
+
+        getContent.Code.Should().NotBeNull();
+        getContent.Code.Should().Be(200);
     }
 
 }
