@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using ToDoList.API.Contracts.IRepositories;
 using ToDoList.API.models;
@@ -41,6 +42,17 @@ namespace ToDoList.API.Contracts.Repositories
                 throw new ResponseException("Id is required");
 
             await this._collection.DeleteOneAsync(item => item.Id == Id);
+        }
+
+        public async Task DeleteManyAsync(List<string> Ids) 
+        {
+            if (Ids == null || !Ids.Any() || Ids.Count <= 0)
+                return;
+
+            List<ObjectId> objectIds = Ids.Select(Id => ObjectId.Parse(Id)).ToList();
+            FilterDefinition<TaskModel> filter = Builders<TaskModel>.Filter.In("_id", objectIds);
+
+            await _collection.DeleteManyAsync(filter);
         }
 
         public async Task AddAsync(TaskModel task)

@@ -91,5 +91,19 @@ namespace ToDoList.API.Controllers
             ));
         }
 
+        [HttpDelete("delete-many")]
+        public async Task<IActionResult> DeleteMany(List<string> Ids) 
+        {
+            await this._unit.TaskRepository.DeleteManyAsync(Ids);
+            await this._unit.CompleteAsync();
+
+            return Ok(new Response(
+                "success",
+                "Tasks deleted!",
+                200,
+                ""
+            ));
+        }
+
     }
 }
