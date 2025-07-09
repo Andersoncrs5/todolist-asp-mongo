@@ -1,0 +1,5 @@
+ToDoList.API/bin/
+ToDoList.API/obj/
+
+ToDoList.API/appsettings.json
+ToDoList.API/appsettings.Development.json
