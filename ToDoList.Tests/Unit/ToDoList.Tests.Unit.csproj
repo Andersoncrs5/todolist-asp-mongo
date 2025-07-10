@@ -28,5 +28,4 @@
     <ProjectReference Include="..\..\ToDoList.API\ToDoList.API.csproj" />
   </ItemGroup>
 
-
 </Project>
