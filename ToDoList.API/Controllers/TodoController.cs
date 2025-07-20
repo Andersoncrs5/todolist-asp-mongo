@@ -119,6 +119,7 @@ namespace ToDoList.API.Controllers
         {
             TaskModel task = await _unit.TaskRepository.GetByIdAsync(Id);
             await _unit.TaskRepository.ChangeComepleteTask(Id, task);
+            
             task.IsComplete = !task.IsComplete;
 
             return Ok(new Response<TaskModel>(

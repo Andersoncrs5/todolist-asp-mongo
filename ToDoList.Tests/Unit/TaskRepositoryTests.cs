@@ -128,6 +128,5 @@ namespace Unit
 
             result.Should().Be(42);
         }
-
     }
 }
